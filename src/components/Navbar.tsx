@@ -1,4 +1,3 @@
-import {UserListSize} from "../types/user";
 import React from "react";
 
 export const Navbar: React.FC = ({ children }) => {

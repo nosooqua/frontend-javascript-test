@@ -1,5 +1,4 @@
 import React from "react";
-import {SortDirection} from "../hooks/usePaginationSortableDataWithSearch";
 
 interface ThProps {
     onClick: React.MouseEventHandler

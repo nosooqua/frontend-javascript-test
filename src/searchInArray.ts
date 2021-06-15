@@ -10,7 +10,7 @@ export const searchInArray = (array: any[], value: string) => {
                     // If string, check if value is part of v
                     typeof v == 'string'? v.indexOf(value) >= 0 :
                         // Check numbers, make NaN == NaN
-                        typeof v == 'number'? v === value || isNaN(v) && isNaN(value):
+                        typeof v == 'number'? v === value || (isNaN(v) && isNaN(value)):
                             // Otherwise look for strict equality: null, undefined, function, boolean
                             v === value
         );
