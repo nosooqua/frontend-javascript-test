@@ -38,6 +38,10 @@ export const App: React.FC = () => {
         )
 
     React.useEffect(() => {
+        requestChangePage(1)
+    }, [users, rowsPerPage])
+
+    React.useEffect(() => {
         fetchUsersShort()
     }, [])
 
