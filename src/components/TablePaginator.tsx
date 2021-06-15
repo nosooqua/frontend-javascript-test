@@ -1,12 +1,12 @@
 import React from "react";
 
 interface TablePaginatorProps {
-    rowsPerPageOptions: (number | { label: string, value: number })[]
+    rowsPerPageOptions: number[]
     count: number
     page: number
     rowsPerPage: number
-    onChangePage: (event: React.MouseEvent | null, newPage: number) => void
-    onChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onChangePage: (newPage: number) => void
+    onChangeRowsPerPage: (newRowsPerPage: number) => void
 }
 
 export const TablePaginator: React.FC<TablePaginatorProps> = ({
@@ -82,59 +82,84 @@ export const TablePaginator: React.FC<TablePaginatorProps> = ({
 
     const handleClick = (newPage: number) => (e: React.MouseEvent) => {
         e.preventDefault()
-        onChangePage(e, newPage)
+        onChangePage(newPage)
     }
 
     const handleMoveLeft = (e: React.MouseEvent) => {
         e.preventDefault();
-        onChangePage(e, page - 1)
+        onChangePage(page - 1)
     }
 
     const handleMoveRight = (e: React.MouseEvent) => {
         e.preventDefault();
-        onChangePage(e, page + 1)
+        onChangePage(page + 1)
     }
 
     return (
         <>
-            <div className="btn-group">
-                <button type="button" className="btn dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                    {rowsPerPage}
-                </button>
-                <ul className="dropdown-menu">
-                    {rowsPerPageOptions.map((item, key) =>
-                        <li><a className="dropdown-item" href="#">{typeof item === 'number' ? item : item.label}</a></li>
-                    )}
-                </ul>
-            </div>
-            <nav>
-                <ul className="pagination">
-                    {fetchPageNumbers().map((pageNum, key) => {
-                            if(pageNum === -1) return (
-                                <li className="page-item" key={key}>
-                                    <a onClick={handleMoveLeft} className="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                            )
-                            if(pageNum === -5) return (
-                                <li className="page-item" key={key}>
-                                    <a onClick={handleMoveRight} className="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            )
-                            return (
-                                <li className="page-item" key={key}>
-                                    <a onClick={handleClick(pageNum)} className="page-link" href="#">{pageNum}</a>
-                                </li>
-                            )
-                        }
-                    )}
+            <div className="container">
+                <div className="row align-items-center row-cols-auto">
+                    <div className="col"><p className="mb-0">Записи с {page*rowsPerPage-rowsPerPage+1} по {Math.min(page*rowsPerPage, count)} из {count}.</p></div>
+                    <div className="col"><p className="mb-0">Записей на страницу:</p></div>
+                    <div className="col">
+                        <div className="btn-group">
+                            <button type="button" className="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                {rowsPerPage}
+                            </button>
+                            <ul className="dropdown-menu">
+                                {rowsPerPageOptions.map((item, key) =>
+                                    <li key={key} onClick={() => onChangeRowsPerPage(item)}>
+                                        <a className="dropdown-item" href="#">
+                                            {item}
+                                        </a>
+                                    </li>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <nav>
+                            <ul className="pagination mb-0">
+                                {fetchPageNumbers().map((pageNum, key) => {
+                                        if(pageNum === -1) return (
+                                            <li className="page-item" key={key}>
+                                                <a onClick={handleMoveLeft}
+                                                   className="page-link"
+                                                   aria-label="Previous"
+                                                   href="#"
+                                                >
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        )
+                                        if(pageNum === -5) return (
+                                            <li className="page-item" key={key}>
+                                                <a onClick={handleMoveRight}
+                                                   className="page-link"
+                                                   aria-label="Next"
+                                                   href="#"
+                                                >
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        )
+                                        return (
+                                            <li className={`page-item ${pageNum === page ? 'active' : ""}`} key={key}>
+                                                <a onClick={handleClick(pageNum)}
+                                                   className="page-link"
+                                                   href="#"
+                                                >{pageNum}</a>
+                                            </li>
+                                        )
+                                    }
+                                )}
 
-                </ul>
-            </nav>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </>
 
     )

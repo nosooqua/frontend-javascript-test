@@ -4,13 +4,18 @@ export type User = {
         lastName: string,
         email: string,
         phone: string,
-        address: {
+        address?: {
         streetAddress: string,
             city: string,
             state: string,
             zip: string
     },
-    description: string
+    description?: string
+}
+
+export enum UserListSize {
+    SHORT = "SHORT",
+    LONG = "LONG"
 }
 
 export enum UserLink {
@@ -22,22 +27,26 @@ export enum UserActionTypes {
     FETCH_USERS = "FETCH_USERS",
     FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS",
     FETCH_USERS_ERROR = "FETCH_USERS_ERROR",
-    ADD_USER = "ADD_USER"
+    ADD_USER = "ADD_USER",
+    SEARCH_USER = "SEARCH_USER"
 }
 
 export interface UserState {
     users: User[]
     loading: boolean
     error: string | null
+    size: UserListSize | null
 }
 
 interface FetchUsersAction {
     type: UserActionTypes.FETCH_USERS
+    size: UserListSize
 }
 
 interface FetchUsersSuccessAction {
     type: UserActionTypes.FETCH_USERS_SUCCESS
     payload: User[]
+    size: UserListSize
 }
 
 interface FetchUsersErrorAction {
@@ -50,4 +59,9 @@ interface AddUserAction {
     payload: User
 }
 
-export type UserAction = FetchUsersAction | FetchUsersErrorAction | FetchUsersSuccessAction | AddUserAction
+interface SearchUsersAction {
+    type: UserActionTypes.SEARCH_USER,
+    payload: User[]
+}
+
+export type UserAction = FetchUsersAction | FetchUsersErrorAction | FetchUsersSuccessAction | AddUserAction | SearchUsersAction
