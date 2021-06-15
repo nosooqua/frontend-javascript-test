@@ -7,6 +7,8 @@ import {UserDescription} from "./components/UserDescription";
 import {AddUser} from "./components/AddUser";
 import {SortDirection, usePaginationSortableDataWithSearch} from "./hooks/usePaginationSortableDataWithSearch";
 import {SearchUser} from "./components/SearchUsers";
+import {Link, Navbar} from "./components/Navbar";
+import {Th} from "./components/Th";
 
 export const App: React.FC = () => {
 
@@ -57,36 +59,16 @@ export const App: React.FC = () => {
 
     return (
         <div className="app">
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container container-lg container-fluid">
-                    <a className="navbar-brand" href="#">Тестовое задание Future</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"/>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <a className={`nav-link${size === UserListSize.SHORT ? ' active' :''}`}
-                                   href="#"
-                                   onClick={handleFetchUsersShortClick}
-                                >
-                                    Маленький набор данных
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className={`nav-link${size === UserListSize.LONG ? ' active' :''}`}
-                                   href="#"
-                                   onClick={handleFetchUsersLongClick}
-                                >
-                                    Большой набор данных
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <Navbar>
+                <Link active={size === UserListSize.SHORT}
+                      name="Маленький набор данных"
+                      onClick={handleFetchUsersShortClick}
+                />
+                <Link active={size === UserListSize.LONG}
+                      name="Большой набор данных"
+                      onClick={handleFetchUsersLongClick}
+                />
+            </Navbar>
             <div className="container container-lg container-fluid mt-4">
                 <AddUser addUserEvent={handleAddUser}/>
                 <div className="row justify-content-between align-items-center row-cols-auto">
@@ -108,61 +90,36 @@ export const App: React.FC = () => {
                     {loading && <div className="spinner-border m-3" role="status"><span className="visually-hidden">Loading...</span></div>}
                     <thead>
                     <tr>
-                        <th scope="col" onClick={() => requestSort("id")}>
+                        <Th onClick={() => requestSort("id")}
+                            showSort={sortConfig?.key === "id"}
+                            desc={sortConfig?.direction === SortDirection.DESC}
+                        >
                             ID
-                            {sortConfig?.key === "id" ?
-                                sortConfig.direction === SortDirection.DESC ?
-                                    <i className="bi bi-caret-down-fill"/>
-                                    :
-                                    <i className="bi bi-caret-up-fill"/>
-                                :
-                                ""
-                            }
-                        </th>
-                        <th scope="col" onClick={() => requestSort("firstName")}>
+                        </Th>
+                        <Th onClick={() => requestSort("firstName")}
+                            showSort={sortConfig?.key === "firstName"}
+                            desc={sortConfig?.direction === SortDirection.DESC}
+                        >
                             Имя
-                            {sortConfig?.key === "firstName" ?
-                                sortConfig.direction === SortDirection.DESC ?
-                                    <i className="bi bi-caret-down-fill"/>
-                                    :
-                                    <i className="bi bi-caret-up-fill"/>
-                                :
-                                ""
-                            }
-                        </th>
-                        <th scope="col" onClick={() => requestSort("lastName")}>
+                        </Th>
+                        <Th onClick={() => requestSort("lastName")}
+                            showSort={sortConfig?.key === "lastName"}
+                            desc={sortConfig?.direction === SortDirection.DESC}
+                        >
                             Фамилия
-                            {sortConfig?.key === "lastName" ?
-                                sortConfig.direction === SortDirection.DESC ?
-                                    <i className="bi bi-caret-down-fill"/>
-                                    :
-                                    <i className="bi bi-caret-up-fill"/>
-                                :
-                                ""
-                            }
-                        </th>
-                        <th scope="col" onClick={() => requestSort("email")}>
+                        </Th>
+                        <Th onClick={() => requestSort("email")}
+                            showSort={sortConfig?.key === "email"}
+                            desc={sortConfig?.direction === SortDirection.DESC}
+                        >
                             E-Mail
-                            {sortConfig?.key === "email" ?
-                                sortConfig.direction === SortDirection.DESC ?
-                                    <i className="bi bi-caret-down-fill"/>
-                                    :
-                                    <i className="bi bi-caret-up-fill"/>
-                                :
-                                ""
-                            }
-                        </th>
-                        <th scope="col" onClick={() => requestSort("phone")}>
+                        </Th>
+                        <Th onClick={() => requestSort("phone")}
+                            showSort={sortConfig?.key === "phone"}
+                            desc={sortConfig?.direction === SortDirection.DESC}
+                        >
                             Телефон
-                            {sortConfig?.key === "phone" ?
-                                sortConfig.direction === SortDirection.DESC ?
-                                    <i className="bi bi-caret-down-fill"/>
-                                    :
-                                    <i className="bi bi-caret-up-fill"/>
-                                :
-                                ""
-                            }
-                        </th>
+                        </Th>
                     </tr>
                     </thead>
                     <tbody>
